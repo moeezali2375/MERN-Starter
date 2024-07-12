@@ -4,12 +4,14 @@ const connectDB = require("./config/db");
 const homeRoutes = require("./routes/routes");
 const authRoutes = require("./routes/authRoutes");
 const protectRoutes = require("./routes/protectRoutes");
+const { crossOrigin } = require("./middlewares/corsMiddleware");
 
 const app = express();
 
 //!Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+crossOrigin(app);
 app.use("/api", homeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/protect", protectRoutes);

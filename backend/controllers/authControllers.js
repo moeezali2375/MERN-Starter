@@ -60,6 +60,8 @@ const registerUser = async (req, res) => {
 };
 
 const verifyToken = async (req, res) => {
+  if (req.user.isVerified)
+    return res.status(400).send("User Already Verified.");
   try {
     const user = await User.findOne({
       verificationToken: req.params.token,
@@ -82,6 +84,8 @@ const verifyToken = async (req, res) => {
 };
 
 const regenerateToken = async (req, res) => {
+  if (req.user.isVerified)
+    return res.status(400).send("User Already Verified.");
   try {
     const user = await User.findById(req.user._id);
     user.verificationToken = generateVerificationToken();
