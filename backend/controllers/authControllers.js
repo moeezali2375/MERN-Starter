@@ -45,7 +45,7 @@ const registerUser = async (req, res) => {
 
     await user.save();
 
-    sendCode(user);
+    await sendCode(user);
 
     return res.status(200).json({
       _id: user._id,
@@ -90,7 +90,7 @@ const regenerateToken = async (req, res) => {
     const user = await User.findById(req.user._id);
     user.verificationToken = generateVerificationToken();
     await user.save();
-    sendCode(user);
+    await sendCode(user);
     res.status(200).send("Verification Code Sent.");
   } catch (error) {
     res.status(400).send(error.message);
@@ -106,7 +106,8 @@ const login = async (req, res) => {
     }
     const user = await User.findOne({ email: email });
     if (user) {
-      if (user.matchPassword(password)) {
+      const hehe = await user.matchPassword(password);
+      if (hehe) {
         return res.status(200).json({
           _id: user._id,
           name: user.name,
