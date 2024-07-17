@@ -4,6 +4,7 @@ import Auth from "./components/Auth";
 import Header from "./components/Header";
 import { ThemeProvider } from "./components/theme-provider";
 import { VerificationForm } from "./components/VerificationForm";
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Auth />} />
         <Route path="/verify" element={<VerificationForm />} />
       </Routes>
+      <Toaster />
     </ThemeProvider>
   );
 }

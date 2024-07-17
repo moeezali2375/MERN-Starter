@@ -11,8 +11,66 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "./ui/switch";
+import { useState } from "react";
+import axios from "axios";
+import { useToast } from "./ui/use-toast";
+
+interface loginResponse {
+  _id: string;
+  name: string;
+  email: string;
+  isVerified: boolean;
+  token: string;
+}
 
 export default function Auth() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const { toast } = useToast();
+
+  const URL = "http://localhost:4000/api/auth";
+
+  const handleGuest = () => {
+    setEmail("guest@example.com");
+    setPassword("1234");
+  };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    if (!email || !password) {
+      toast({
+        variant: "destructive",
+        description: "Please provide all the details.",
+      });
+      return;
+    }
+    let result: loginResponse;
+    try {
+      result = await axios.post(URL + "/login", {
+        email: email,
+        password: password,
+        rememberMe: rememberMe,
+      });
+      localStorage.setItem("token", result.token);
+      toast({
+        title: "Login Success.",
+        description: "You are logged in.",
+      });
+    } catch (error) {
+      console.log(error);
+      console.log(result);
+      toast({
+        variant: "destructive",
+        description: error.response?.data || "An error occurred during login.",
+      });
+    }
+  };
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <Tabs defaultValue="signup" className="w-[400px]">
@@ -27,31 +85,59 @@ export default function Auth() {
               <CardTitle>Log In</CardTitle>
               <CardDescription>Enter your details to log in.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" placeholder="moeezali2375@gmail.com" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" placeholder="Insta Password" />
-              </div>
-              <div className="flex items-center justify-between ">
-                <Label htmlFor="rememberme">Remember Me</Label>
-                <Switch id="rememberme" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <div className="w-full">
-                <Button className="w-full">Log In</Button>
-                <Button variant="secondary" className="w-full mt-2">
-                  Get Guest User Credentials
-                </Button>
-              </div>
-            </CardFooter>
+            <form id="login" onSubmit={handleLogin}>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    placeholder="moeezali2375@gmail.com"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    placeholder="Insta Password"
+                    type="password"
+                    value={password}
+                    minLength={4}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center justify-between ">
+                  <Label htmlFor="rememberme">Remember Me</Label>
+                  <Switch
+                    id="rememberme"
+                    checked={rememberMe}
+                    onCheckedChange={() => setRememberMe(!rememberMe)}
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <div className="w-full">
+                  <Button className="w-full" type="submit">
+                    Log In
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="w-full mt-2"
+                    type="button"
+                    onClick={handleGuest}
+                  >
+                    Get Guest User Credentials
+                  </Button>
+                </div>
+              </CardFooter>
+            </form>
           </Card>
         </TabsContent>
         <TabsContent value="signup">
+          {/* //! Signup */}
+
           <Card>
             <CardHeader>
               <CardTitle>Sign Up</CardTitle>
@@ -60,33 +146,35 @@ export default function Auth() {
                 6-digit code to you.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" type="text" placeholder="Batman" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="moeezali2375@gmail.com"
-                />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="Password">Password</Label>
-                <Input id="Password" placeholder="Insta Password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input id="confirmPassword" placeholder="Google Password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button size="sm" className="w-full">
-                Sign Up!
-              </Button>
-            </CardFooter>
+            <form id="signup" onSubmit={handleRegister}>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" type="text" placeholder="Batman" />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="moeezali2375@gmail.com"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="Password">Password</Label>
+                  <Input id="Password" placeholder="Insta Password" />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input id="confirmPassword" placeholder="Google Password" />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button size="sm" className="w-full">
+                  Sign Up!
+                </Button>
+              </CardFooter>
+            </form>
           </Card>
         </TabsContent>
       </Tabs>
