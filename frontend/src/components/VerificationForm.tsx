@@ -56,9 +56,7 @@ export function VerificationForm() {
           render={({ field }) => (
             <FormItem className="w-full max-w-sm">
               <FormLabel className="text-center">
-                <h3 className="text-xl font-semibold ">
-                  Verification Code
-                </h3>
+                <h3 className="text-xl font-semibold ">Verification Code</h3>
               </FormLabel>
               <div className="flex justify-center">
                 <FormControl className="text-center">
@@ -79,7 +77,12 @@ export function VerificationForm() {
           )}
         />
 
-        <Button variant="outline" type="submit">Submit</Button>
+        <div className="flex space-x-4">
+          <Button variant="secondary">Resend</Button>
+          <Button variant="outline" type="submit">
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );
