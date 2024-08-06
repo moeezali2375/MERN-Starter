@@ -14,6 +14,9 @@ import { Switch } from "./ui/switch";
 import { useState } from "react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/context/UserContext";
 
 interface loginResponse {
   _id: string;
@@ -27,7 +30,10 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const { setAuthToken } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const { setUser } = useUser();
 
   const URL = "http://localhost:4000/api/auth";
 
@@ -47,12 +53,16 @@ export default function Auth() {
     }
     let result: loginResponse;
     try {
-      result = await axios.post(URL + "/login", {
+      const res = await axios.post(URL + "/login", {
         email: email,
         password: password,
         rememberMe: rememberMe,
       });
-      localStorage.setItem("token", result.token);
+      result=res.data;
+      setAuthToken(result.token);
+      delete result.token;
+      setUser(result);
+      navigate("/home");
       toast({
         title: "Login Success.",
         description: "You are logged in.",
