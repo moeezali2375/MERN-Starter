@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Auth from "./components/Auth";
-import Header from "./components/Header";
-import { ThemeProvider } from "./components/theme-provider";
-import { VerificationForm } from "./components/VerificationForm";
+import Auth from "@/components/Auth";
+import Header from "@/components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
+import { VerificationForm } from "@/components/VerificationForm";
 import { Toaster } from "@/components/ui/toaster";
-import PrivateRoute from "./components/PrivateRoute";
-import VerifiedRoute from "./components/VerifiedRoute";
+import PrivateRoute from "@/components/PrivateRoute";
+import VerifiedRoute from "@/components/VerifiedRoute";
+import ProtectedComp from "@/components/ProtectedComp";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/verify" element={<VerificationForm />} />
           <Route element={<VerifiedRoute />}>
-            <Route path="/home" element={<h2>hello</h2>} />
+            <Route path="/home" element={<ProtectedComp />} />
           </Route>
         </Route>
       </Routes>

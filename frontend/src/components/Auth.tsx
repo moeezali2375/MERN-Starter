@@ -11,10 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "./ui/switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import useUser from "@/context/User/UserHook";
+import { useNavigate } from "react-router-dom";
 
 interface loginResponse {
   _id: string;
@@ -28,8 +29,14 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
   const { toast } = useToast();
-  const { setUser } = useUser();
+  const { user, setUser } = useUser();
+
+  useEffect(() => {
+    console.log("Login useEffect");
+    if (user) navigate("/home");
+  }, [navigate, user]);
 
   const URL = "http://localhost:4000/api/auth";
 
@@ -47,7 +54,6 @@ export default function Auth() {
       });
       return;
     }
-    let result: loginResponse;
     try {
       const res = await axios.post(URL + "/login", {
         email: email,
@@ -55,13 +61,12 @@ export default function Auth() {
         rememberMe: rememberMe,
       });
       setUser(res.data);
+      navigate("/home");
       toast({
         title: "Login Success.",
         description: "You are logged in.",
       });
     } catch (error) {
-      console.log(error);
-      console.log(result);
       toast({
         variant: "destructive",
         description: error.response?.data || "An error occurred during login.",

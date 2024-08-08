@@ -1,24 +1,22 @@
-import { useAxios } from "@/context/AxiosProvider";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
 const ProtectedComp = () => {
-  const axiosInstance = useAxios();
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const checkStatus = async () => {
-    try {
-      await axiosInstance.get("/protect");
-      toast({
-        title: "All Okay.",
-        description: "You are Authorized.",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        description: "Token expired",
-      });
-    }
+    // try {
+    //   await axiosInstance.get("/protect");
+    //   toast({
+    //     title: "All Okay.",
+    //     description: "You are Authorized.",
+    //   });
+    // } catch (error) {
+    //   toast({
+    //     variant: "destructive",
+    //     description: "Token expired",
+    //   });
+    // }
   };
   return (
     <div className="text-center allign-center">
