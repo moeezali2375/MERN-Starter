@@ -1,11 +1,11 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import useUser from "@/context/User/UserHook";
 
 const PrivateRoute: React.FC = () => {
-  const { authToken } = useAuth();
+  const { user } = useUser();
 
-  return authToken ? <Outlet /> : <Navigate to="/" />;
+  return user ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;

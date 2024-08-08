@@ -13,10 +13,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "./ui/switch";
 import { useState } from "react";
 import axios from "axios";
-import { useToast } from "./ui/use-toast";
-import { useAuth } from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "@/context/UserContext";
+import { useToast } from "@/components/ui/use-toast";
+import useUser from "@/context/User/UserHook";
 
 interface loginResponse {
   _id: string;
@@ -30,15 +28,13 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const { setAuthToken } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
   const { setUser } = useUser();
 
   const URL = "http://localhost:4000/api/auth";
 
   const handleGuest = () => {
-    setEmail("guest@example.com");
+    setEmail("moeezali2375@gmail.com");
     setPassword("1234");
   };
 
@@ -58,11 +54,7 @@ export default function Auth() {
         password: password,
         rememberMe: rememberMe,
       });
-      result=res.data;
-      setAuthToken(result.token);
-      delete result.token;
-      setUser(result);
-      navigate("/home");
+      setUser(res.data);
       toast({
         title: "Login Success.",
         description: "You are logged in.",
