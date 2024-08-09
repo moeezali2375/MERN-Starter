@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 
 const generateVerificationToken = () => {
-  return crypto.randomBytes(3).toString("hex");
+  return crypto.randomInt(100000,999999);
 };
 
 const expiry = (time) => {
