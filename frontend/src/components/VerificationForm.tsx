@@ -18,6 +18,11 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import useAxios from "@/hooks/useAxios";
+import useUser from "@/context/User/UserHook";
+import { useEffect, useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -32,17 +37,54 @@ export function VerificationForm() {
       pin: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
+  const { user, setUser } = useUser();
+  const axios = useAxios();
+  const navigate = useNavigate();
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  useEffect(() => {
+    if (user.isVerified === true) navigate("/home");
+  }, [user, navigate]);
+
+  const handleResend = async () => {
+    setIsLoading2(true);
+    try {
+      const res = await axios.get("/auth/token/regenerate");
+      toast({
+        title: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading2(false);
+    }
+  };
+
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    try {
+      const url = "/auth/token/verify/" + data.pin;
+      toast({
+        title: "You submitted the following values:",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          </pre>
+        ),
+      });
+      await axios.get(url);
+      toast({
+        title: "Verification Successfull!",
+        description: "🥳 You can now start using the app.💥",
+      });
+      setUser({ ...user, isVerified: true });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -70,7 +112,7 @@ export function VerificationForm() {
                 </FormControl>
               </div>
               <FormDescription className="text-center">
-                Please enter the one-time password sent to your phone.
+                Please enter the one-time password sent to your email.
               </FormDescription>
               <FormMessage className="text-center" />
             </FormItem>
@@ -78,9 +120,19 @@ export function VerificationForm() {
         />
 
         <div className="flex space-x-4">
-          <Button variant="secondary">Resend</Button>
-          <Button variant="outline" type="submit">
-            Submit
+          <Button
+            variant="secondary"
+            onClick={handleResend}
+            disabled={isLoading2 ? true : false}
+          >
+            {isLoading2 ? <LoaderCircle className="spinner" /> : "Resend"}
+          </Button>
+          <Button
+            variant="outline"
+            type="submit"
+            disabled={isLoading ? true : false}
+          >
+            {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
           </Button>
         </div>
       </form>

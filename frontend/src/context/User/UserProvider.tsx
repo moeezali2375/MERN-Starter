@@ -9,7 +9,7 @@ type User = {
   token: string;
 };
 
-const UserProvider = ({children}) => {
+const UserProvider = ({ children }) => {
   const [user, setUser] = useState<User | null>(
     JSON.parse(localStorage.getItem("user")) || null
   );

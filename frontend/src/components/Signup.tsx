@@ -57,7 +57,7 @@ const Signup = () => {
         title: "Signup Success.",
         description: "Please verify your account to continue.",
       });
-      navigate("/verify");
+      navigate("/home");
       setUser(res.data);
     } catch (error) {
       console.log(error);
