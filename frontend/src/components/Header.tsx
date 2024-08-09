@@ -14,7 +14,10 @@ import { ModeToggle } from "./mode-toggle";
 import useUser from "@/context/User/UserHook";
 
 const Header = () => {
-  const { user } = useUser();
+  const { user, logout } = useUser();
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <header className="top-0  flex h-16 items-center gap-4 border-b px-4 md:px-6 sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -57,10 +60,11 @@ const Header = () => {
           </nav>
         </SheetContent>
       </Sheet>
-      {user && (
-        <div className="flex w-full justify-end items-center gap-4">
-          <div className="relative">
-            <ModeToggle />
+
+      <div className="flex w-full justify-end items-center gap-4">
+        <div className="relative">
+          <ModeToggle />
+          {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
@@ -74,12 +78,14 @@ const Header = () => {
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
+                  Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </header>
   );
 };
