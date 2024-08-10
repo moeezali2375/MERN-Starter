@@ -12,12 +12,20 @@ import { Menu, CircleUser, Package2 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { ModeToggle } from "./mode-toggle";
 import useUser from "@/context/User/UserHook";
+import { Dialog } from "@/components/ui/dialog";
+import { useState } from "react";
+import EmailDialog from "@/components/EmailDialog";
+import PasswordDialog from "@/components/PasswordDialog";
 
 const Header = () => {
   const { user, logout } = useUser();
+  const [emailDialog, setEmailDialog] = useState(false);
+  const [pwdDialog, setPwdDialog] = useState(false);
+
   const handleLogout = () => {
     logout();
   };
+
   return (
     <header className="top-0  flex h-16 items-center gap-4 border-b px-4 md:px-6 sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -65,24 +73,42 @@ const Header = () => {
         <div className="relative">
           <ModeToggle />
           {user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full">
+                    <CircleUser className="h-5 w-5" />
+                    <span className="sr-only">Toggle user menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setEmailDialog(true)}>
+                    Email
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setPwdDialog(true)}>
+                    Password
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Dialog
+                open={emailDialog}
+                onOpenChange={() => setEmailDialog(!emailDialog)}
+              >
+                <EmailDialog />
+              </Dialog>
+              <Dialog
+                open={pwdDialog}
+                onOpenChange={() => setPwdDialog(!pwdDialog)}
+              >
+                <PasswordDialog setPwdDialog={setPwdDialog} />
+              </Dialog>
+            </>
           )}
         </div>
       </div>
