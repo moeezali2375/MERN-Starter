@@ -34,6 +34,8 @@ const EmailDialog = () => {
       toast({
         title: res.data,
       });
+      setEmail(user.email);
+      setPassword("");
     } catch (error) {
       console.log(error);
     } finally {

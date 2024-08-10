@@ -135,7 +135,7 @@ const changePassword = async (req, res) => {
         await user.save();
         res.status(200).send("🎉 Password Changed! 🥳");
       } else {
-        throw new Error("Password doesn't match.");
+        throw new Error("Passwords don't match.");
       }
     } else {
       throw new Error("User doesn't exist.");
@@ -145,10 +145,15 @@ const changePassword = async (req, res) => {
   }
 };
 
+const changeEmail = async (req, res) => {
+  res.status(400).send("heehe");
+};
+
 module.exports = {
   registerUser,
   verifyToken,
   regenerateToken,
   login,
   changePassword,
+  changeEmail
 };

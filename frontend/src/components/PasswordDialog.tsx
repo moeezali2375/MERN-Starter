@@ -39,7 +39,7 @@ const PasswordDialog = ({ setPwdDialog }) => {
     setIsLoading(true);
     try {
       if (!oldPassword || !password || !confirmPassword) return;
-      const res = await axios.post("/auth/change-password", {
+      const res = await axios.put("/auth/password", {
         oldPassword: oldPassword,
         newPassword: password,
       });
@@ -47,6 +47,9 @@ const PasswordDialog = ({ setPwdDialog }) => {
         title: res.data,
       });
       setPwdDialog(false);
+      setOldPassword("");
+      setPassword("");
+      setConfirmPassword("");
     } catch (error) {
       console.log(error);
     } finally {
