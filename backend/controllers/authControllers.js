@@ -124,9 +124,31 @@ const login = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id);
+    if (user) {
+      const hehe = await user.matchPassword(oldPassword);
+      if (hehe) {
+        user.password = newPassword;
+        await user.save();
+        res.status(200).send("🎉 Password Changed! 🥳");
+      } else {
+        throw new Error("Password doesn't match.");
+      }
+    } else {
+      throw new Error("User doesn't exist.");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
 module.exports = {
   registerUser,
   verifyToken,
   regenerateToken,
   login,
+  changePassword,
 };

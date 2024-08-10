@@ -5,6 +5,7 @@ const {
   verifyToken,
   regenerateToken,
   login,
+  changePassword,
 } = require("../controllers/authControllers");
 
 router.get("/", (req, res) => {
@@ -18,5 +19,7 @@ router.get("/token/verify/:token", protect, verifyToken);
 router.get("/token/regenerate", protect, regenerateToken);
 
 router.post("/login", login);
+
+router.post("/change-password", protect, changePassword);
 
 module.exports = router;
