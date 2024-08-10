@@ -50,6 +50,7 @@ const useAxios = () => {
           logout();
           navigate("/");
         } else if (!error.response) {
+          //! Network Error
           toast({
             variant: "destructive",
             description: error.message || "An error occurred during login.",
@@ -58,10 +59,9 @@ const useAxios = () => {
           toast({
             variant: "destructive",
             description:
-              error.response?.message || "An error occurred during login.",
+              error.response?.data || "An error occurred during login.",
           });
         }
-        console.error("Response Error: ", error);
         return Promise.reject(error);
       }
     );
