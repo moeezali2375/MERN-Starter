@@ -49,11 +49,16 @@ const useAxios = () => {
           });
           logout();
           navigate("/");
+        } else if (!error.response) {
+          toast({
+            variant: "destructive",
+            description: error.message || "An error occurred during login.",
+          });
         } else {
           toast({
             variant: "destructive",
             description:
-              error.response?.data || "An error occurred during login.",
+              error.response?.message || "An error occurred during login.",
           });
         }
         console.error("Response Error: ", error);

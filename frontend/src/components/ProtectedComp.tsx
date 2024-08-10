@@ -1,29 +1,35 @@
+import useAxios from "@/hooks/useAxios";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 const ProtectedComp = () => {
-  // const { toast } = useToast();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const axios = useAxios();
   const checkStatus = async () => {
-    // try {
-    //   await axiosInstance.get("/protect");
-    //   toast({
-    //     title: "All Okay.",
-    //     description: "You are Authorized.",
-    //   });
-    // } catch (error) {
-    //   toast({
-    //     variant: "destructive",
-    //     description: "Token expired",
-    //   });
-    // }
+    setIsLoading(true);
+    try {
+      await axios.get("/protect");
+      toast({
+        title: "All Okay.",
+        description: "You are Authorized.",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="text-center allign-center">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center py-10">
         You are logged in!
       </h1>
-      <Button onClick={checkStatus}>Check Status</Button>
+      <Button onClick={checkStatus} disabled={isLoading ? true : false}>
+        {isLoading ? <LoaderCircle className="spinner" /> : "Check Status"}
+      </Button>
     </div>
   );
 };
