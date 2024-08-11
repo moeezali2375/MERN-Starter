@@ -214,18 +214,20 @@ const verifyChangeEmail = async (req, res) => {
 
       if (user.newEmailToken === token) {
         const message = changeEmailVerificationNotification(user);
-        
+
         user.email = user.newEmail;
         user.newEmail = undefined;
         user.newEmailExpires = undefined;
         user.newEmailToken = undefined;
 
-
         await user.save();
 
         await sendEmailNotification(user.email, message.subject, message.body);
 
-        res.status(200).send("🎊 Your Email is Changed! 🥂");
+        res.status(200).json({
+          notification: "🎊 Your Email is Changed! 🥂",
+          newEmail: user.email,
+        });
       } else {
         throw new Error("Incorrect or Expired Token!");
       }

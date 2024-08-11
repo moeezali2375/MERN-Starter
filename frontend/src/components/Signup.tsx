@@ -45,7 +45,7 @@ const Signup = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      if (!name || !email || !match) {
+      if (!name || !email || match === 2) {
         return;
       }
       const res = await axios.post("/auth/register", {

@@ -100,7 +100,7 @@ const Header = () => {
                 open={emailDialog}
                 onOpenChange={() => setEmailDialog(!emailDialog)}
               >
-                <EmailDialog />
+                <EmailDialog setEmailDialog={setEmailDialog} />
               </Dialog>
               <Dialog
                 open={pwdDialog}

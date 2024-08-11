@@ -15,7 +15,7 @@ import useAxios from "@/hooks/useAxios";
 import { useToast } from "@/components/ui/use-toast";
 import { LoaderCircle } from "lucide-react";
 
-const EmailDialog = () => {
+const EmailDialog = ({ setEmailDialog }) => {
   const { user } = useUser();
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState("");
@@ -36,6 +36,7 @@ const EmailDialog = () => {
       });
       setEmail(user.email);
       setPassword("");
+      setEmailDialog(false);
     } catch (error) {
       console.log(error);
     } finally {

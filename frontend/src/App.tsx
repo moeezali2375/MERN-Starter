@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import PrivateRoute from "@/components/PrivateRoute";
 import VerifiedRoute from "@/components/VerifiedRoute";
 import ProtectedComp from "@/components/ProtectedComp";
+import ChangeEmailVerification from "@/components/ChangeEmailVerification";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/verify" element={<VerificationForm />} />
           <Route element={<VerifiedRoute />}>
+            <Route
+              path="/email/verify/:token"
+              element={<ChangeEmailVerification />}
+            />
             <Route path="/home" element={<ProtectedComp />} />
           </Route>
         </Route>
