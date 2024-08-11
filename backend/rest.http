@@ -1,0 +1,57 @@
+### ? API
+GET {{url}}
+
+### ? AUTH / REGISTER
+POST {{url}}/auth/register 
+Content-Type: application/json
+
+{
+    "name":"Moeez Ali",
+    "email":"moeezali2375@gmail.com",
+    "password":"1234"
+}
+
+### ? AUTH / TOKEN / VERIFY
+GET {{url}}/auth/token/verify/612345
+Authorization: Bearer {{token}}
+
+### ? AUTH / TOKEN / REGENERATE
+GET {{url}}/auth/token/verify/regenerate
+Authorization: Bearer {{token}}
+
+### ? AUTH / LOGIN
+POST {{url}}/auth/login 
+Content-Type: application/json
+
+{
+    "email":"moeezali2375@gmail.com",
+    "password":"1234"
+}
+
+### ? AUTH / PASSWORD
+PUT {{url}}/auth/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "oldPassword": "1234",
+    "newPassword": "1234"
+}
+
+### ? AUTH / EMAIL
+PUT {{url}}/auth/email
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "newEmail": "l211798@lhr.nu.edu.pk",
+    "password": "1234"
+}
+
+### ? AUTH / EMAIL / VERIFY
+GET {{url}}/auth/email/verify/774536
+Authorization: Bearer {{token}}
+
+### ? PROTECT
+GET {{url}}/protect
+Authorization: Bearer {{token}}

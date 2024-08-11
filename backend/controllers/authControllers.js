@@ -179,7 +179,7 @@ const changeEmail = async (req, res) => {
       if (hehe) {
         user.newEmail = newEmail;
         user.newEmailToken = generateVerificationToken();
-        user.newEmailExpires = expiry(120); //5 mins
+        user.newEmailExpires = expiry(300); //5 mins
 
         await user.save();
 

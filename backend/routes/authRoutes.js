@@ -28,6 +28,6 @@ router.put("/password", protect, userVerify, changePassword);
 
 router.put("/email", protect, userVerify, changeEmail);
 
-router.put("/email/verify/:token", protect, userVerify, verifyChangeEmail);
+router.get("/email/verify/:token", protect, userVerify, verifyChangeEmail);
 
 module.exports = router;
