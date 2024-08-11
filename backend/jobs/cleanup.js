@@ -1,9 +1,7 @@
 const cron = require("node-cron");
 const User = require("../models/userModel");
 
-cron.schedule("*/3 * * * *", async () => {
-  console.log("Running a task every 3 minutes.");
-
+cron.schedule(process.env.CRON_TIME, async () => {
   try {
     const now = new Date();
 
