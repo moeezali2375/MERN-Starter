@@ -8,17 +8,25 @@ const protect = async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
+      const now = new Date();
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
-      const result = await User.findById(decoded.id).select(
-        "_id name email isVerified"
-      );
+      const result = await User.findById(decoded.id);
       if (!result) {
         return res.status(401).send("Not Authorized.");
+      } else if (result?.verificationTokenExpires < now) {
+        return res.status(401).send("Not Authorized.");
       }
-      req.user = result;
+      req.user = {
+        _id: result._id,
+        name: result.name,
+        email: result.email,
+        isVerified: result.isVerified,
+      };
+
       next();
     } catch (error) {
+      console.log(error);
       return res.status(401).send("Not Authorized.");
     }
   }

@@ -24,7 +24,15 @@ const userSchema = new mongoose.Schema({
   },
   verificationTokenExpires: {
     type: Date,
-    expires: 900, //15 Min
+  },
+  newEmail: {
+    type: String,
+  },
+  newEmailToken: {
+    type: String,
+  },
+  newEmailExpires: {
+    type: Date,
   },
 });
 
