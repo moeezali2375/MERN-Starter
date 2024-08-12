@@ -14,7 +14,6 @@ const useAxios = () => {
   const { user, logout } = useUser();
 
   useEffect(() => {
-    console.log("axios useEffect");
     const reqInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
         if (user) {

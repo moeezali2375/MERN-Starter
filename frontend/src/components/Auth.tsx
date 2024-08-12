@@ -10,7 +10,6 @@ export default function Auth() {
   const { user } = useUser();
 
   useEffect(() => {
-    console.log("Login useEffect");
     if (user) navigate("/home");
   }, [navigate, user]);
 
