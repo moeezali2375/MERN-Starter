@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
 const {
   generateVerificationToken,
+  generatePwdToken,
   expiry,
 } = require("../utils/verificationToken");
 const generateToken = require("../utils/generateToken");
@@ -9,6 +10,7 @@ const generateToken = require("../utils/generateToken");
 const {
   emailVerificationMessage,
   changeEmailVerficationMessage,
+  forgetPwdVerificationMessage,
 } = require("../emails/verificationMessages");
 
 const {
@@ -238,6 +240,46 @@ const verifyChangeEmail = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
+
+const forgetPasswordInitiate = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!user) throw new Error("😝 User does not exist in the database. 😛");
+    else {
+      user.forgetPasswordToken = generatePwdToken();
+      user.forgetPasswordExpires = expiry(300);
+      await user.save();
+
+      const message = forgetPwdVerificationMessage(user);
+      await sendEmailNotification(user.email, message.subject, message.body);
+
+      res.status(200).send("👀 Password Recovery Request Initiated! 🤨");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+const verifyForgetPasswordRequest = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const token = req.params.token;
+    const { password } = req.body;
+    const isTrue = await User.findOne({ email: email });
+    console.log(isTrue, token);
+    if (isTrue && isTrue.forgetPasswordToken === token) {
+      isTrue.password = password;
+      isTrue.forgetPasswordExpires = undefined;
+      isTrue.forgetPasswordToken = undefined;
+      await isTrue.save();
+      res.status(200).send("🤩 Password Recovered! 😎");
+    } else res.status(400).send("Invalid Link!");
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
 module.exports = {
   registerUser,
   verifyToken,
@@ -246,4 +288,6 @@ module.exports = {
   changePassword,
   changeEmail,
   verifyChangeEmail,
+  forgetPasswordInitiate,
+  verifyForgetPasswordRequest,
 };

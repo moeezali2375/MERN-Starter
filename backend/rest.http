@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### ? AUTH / TOKEN / VERIFY
-GET {{url}}/auth/token/verify/612345
+GET {{url}}/auth/token/verify/193426
 Authorization: Bearer {{token}}
 
 ### ? AUTH / TOKEN / REGENERATE
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 {
     "email":"moeezali2375@gmail.com",
-    "password":"1234"
+    "password":"12345"
 }
 
 ### ? AUTH / PASSWORD
@@ -51,6 +51,22 @@ Content-Type: application/json
 ### ? AUTH / EMAIL / VERIFY
 GET {{url}}/auth/email/verify/774536
 Authorization: Bearer {{token}}
+
+### ? AUTH / PWD / FORGET
+PUT {{url}}/auth/password/forget
+Content-Type: application/json
+
+{
+    "email":"moeezali2375@gmail.com"
+}
+
+### ? AUTH / PWD / VERIFY / :EMAIL / :TOKEN
+PUT {{url}}/auth/password/verify/moeezali2375@gmail.com/7db9d9f7f689a705d3291d78982e41d777bc43201cdc3931686441b7e9b3efd6a13ea3dd6e2ef145270f7e49371e3279c2271494a5b2fc3e817765587c685016
+Content-Type: application/json
+
+{
+    "password": "12345"
+}
 
 ### ? PROTECT
 GET {{url}}/protect

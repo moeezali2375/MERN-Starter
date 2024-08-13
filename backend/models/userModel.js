@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema({
   newEmailExpires: {
     type: Date,
   },
+  forgetPasswordToken: {
+    type: String,
+  },
+  forgetPasswordExpires: {
+    type: Date,
+  },
 });
 
 userSchema.pre("save", async function (next) {

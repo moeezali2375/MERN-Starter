@@ -17,7 +17,20 @@ const changeEmailVerficationMessage = (user) => {
     <p>Please make sure this link gets open in the browser you are logged in.</p>
     <p>Best regards,<br>Moeez Ali</p>`;
   const message = {
-    subject: "Email Change Request",
+    subject: "Email Change Verification",
+    body: body,
+  };
+  return message;
+};
+
+const forgetPwdVerificationMessage = (user) => {
+  const verificationUrl = `${process.env.CLIENT}/email/verify/${user.forgetPasswordToken}`;
+  const body = `<p>Dear ${user.name},</p>
+    <p>Please verify your request by clicking the link below:</p><a href="${verificationUrl}">Click Me.</a>
+    <p>This request will expire after 5 minutes.</p>
+    <p>Best regards,<br>Moeez Ali</p>`;
+  const message = {
+    subject: "Password Recovery",
     body: body,
   };
   return message;
@@ -26,4 +39,5 @@ const changeEmailVerficationMessage = (user) => {
 module.exports = {
   emailVerificationMessage,
   changeEmailVerficationMessage,
+  forgetPwdVerificationMessage,
 };

@@ -1,7 +1,11 @@
 const crypto = require("crypto");
 
 const generateVerificationToken = () => {
-  return crypto.randomInt(100000,999999);
+  return crypto.randomInt(100000, 999999);
+};
+
+const generatePwdToken = () => {
+  return crypto.randomBytes(64).toString("hex");
 };
 
 const expiry = (time) => {
@@ -9,6 +13,7 @@ const expiry = (time) => {
 };
 
 module.exports = {
+  generatePwdToken,
   generateVerificationToken,
   expiry,
 };

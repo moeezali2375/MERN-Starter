@@ -10,6 +10,8 @@ const {
   changePassword,
   changeEmail,
   verifyChangeEmail,
+  forgetPasswordInitiate,
+  verifyForgetPasswordRequest,
 } = require("../controllers/authControllers");
 
 router.get("/", (req, res) => {
@@ -29,5 +31,9 @@ router.put("/password", protect, userVerify, changePassword);
 router.put("/email", protect, userVerify, changeEmail);
 
 router.get("/email/verify/:token", protect, userVerify, verifyChangeEmail);
+
+router.put("/password/forget", forgetPasswordInitiate);
+
+router.put("/password/verify/:email/:token", verifyForgetPasswordRequest);
 
 module.exports = router;
