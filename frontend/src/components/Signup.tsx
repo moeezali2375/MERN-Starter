@@ -85,6 +85,9 @@ const Signup = () => {
                 id="name"
                 type="text"
                 placeholder="Batman"
+                autoCorrect="off"
+                spellCheck="false"
+                autoCapitalize="words"
                 value={name}
                 required
                 autoComplete="off"

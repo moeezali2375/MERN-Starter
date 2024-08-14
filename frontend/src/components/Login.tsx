@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import useUser from "@/context/User/UserHook";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import { LoaderCircle } from "lucide-react";
 
@@ -92,6 +92,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            
             <div className="flex items-center justify-between ">
               <Label htmlFor="rememberme">Remember Me</Label>
               <Switch
@@ -99,6 +100,16 @@ const Login = () => {
                 checked={rememberMe}
                 onCheckedChange={() => setRememberMe(!rememberMe)}
               />
+            </div>
+            <div className="space-y-1">
+              <div>
+                <Link
+                  to="/password/forget"
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 text-primary underline-offset-4 hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
             </div>
           </CardContent>
           <CardFooter>
