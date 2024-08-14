@@ -24,7 +24,7 @@ const changeEmailVerficationMessage = (user) => {
 };
 
 const forgetPwdVerificationMessage = (user) => {
-  const verificationUrl = `${process.env.CLIENT}/email/verify/${user.forgetPasswordToken}`;
+  const verificationUrl = `${process.env.CLIENT}/password/verify/${user.email}/${user.forgetPasswordToken}`;
   const body = `<p>Dear ${user.name},</p>
     <p>Please verify your request by clicking the link below:</p><a href="${verificationUrl}">Click Me.</a>
     <p>This request will expire after 5 minutes.</p>
