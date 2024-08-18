@@ -75,8 +75,8 @@ const registerUser = async (req, res) => {
 };
 
 const verifyToken = async (req, res) => {
-  if (req.user.isVerified) throw new Error("User already verified. 🤨");
   try {
+    if (req.user.isVerified) throw new Error("User already verified. 🤨");
     const user = await User.findOne({
       verificationToken: req.params.token,
       verificationTokenExpires: { $gt: Date.now() },
@@ -107,8 +107,8 @@ const verifyToken = async (req, res) => {
 };
 
 const regenerateToken = async (req, res) => {
-  if (req.user.isVerified) throw new Error("User already verified. 🤨");
   try {
+    if (req.user.isVerified) throw new Error("User already verified. 🤨");
     const user = await User.findById(req.user._id);
     user.verificationToken = generateVerificationToken();
     await user.save();
