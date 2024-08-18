@@ -12,30 +12,26 @@ import { Button } from "@/components/ui/button";
 import useUser from "@/context/User/UserHook";
 import { useState } from "react";
 import useAxios from "@/hooks/useAxios";
-import { useToast } from "@/components/ui/use-toast";
 import { LoaderCircle } from "lucide-react";
+import PwdInput from "@/components/PwdInput";
 
 const EmailDialog = ({ setEmailDialog }) => {
   const { user } = useUser();
   const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState("");
+  const [pwd, setPwd] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const axios = useAxios();
-  const { toast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.put("/auth/email", {
+      await axios.put("/auth/email", {
         newEmail: email,
-        password: password,
-      });
-      toast({
-        title: res.data,
+        password: pwd,
       });
       setEmail(user.email);
-      setPassword("");
+      setPwd("");
       setEmailDialog(false);
     } catch (error) {
       console.log(error);
@@ -45,7 +41,7 @@ const EmailDialog = ({ setEmailDialog }) => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[400px]">
+    <DialogContent className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
       <DialogHeader>
         <DialogTitle>Change Email</DialogTitle>
         <DialogDescription>
@@ -69,19 +65,7 @@ const EmailDialog = ({ setEmailDialog }) => {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Password
-            </Label>
-            <Input
-              id="username"
-              type="password"
-              required
-              autoComplete="false"
-              className="col-span-3"
-              placeholder="Insta Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <PwdInput id="pwd" pwd={pwd} setPwd={setPwd} dialog={1} />
           </div>
         </div>
         <DialogFooter>

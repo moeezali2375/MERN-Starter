@@ -1,21 +1,15 @@
 import useAxios from "@/hooks/useAxios";
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 
 const ProtectedComp = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const axios = useAxios();
   const checkStatus = async () => {
     setIsLoading(true);
     try {
       await axios.get("/protect");
-      toast({
-        title: "All Okay.",
-        description: "You are Authorized.",
-      });
     } catch (error) {
       console.log(error);
     } finally {

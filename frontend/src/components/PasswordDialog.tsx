@@ -6,50 +6,47 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+
 import useAxios from "@/hooks/useAxios";
 import { LoaderCircle } from "lucide-react";
+import PwdInput from "./PwdInput";
 
 const PasswordDialog = ({ setPwdDialog }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [match, setMatch] = useState(0);
-  const [oldPassword, setOldPassword] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPwd, setOldPwd] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+
   const axios = useAxios();
-  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (password && confirmPassword) {
-        setMatch(password === confirmPassword ? 1 : 2);
+      if (pwd && confirmPwd) {
+        setMatch(pwd === confirmPwd && pwd.length >= 4 ? 1 : 2);
       } else {
         setMatch(0);
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [password, confirmPassword]);
+  }, [pwd, confirmPwd]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!oldPwd || match === 2 || match === 0) return;
     try {
-      if (!oldPassword || !password || !confirmPassword) return;
-      const res = await axios.put("/auth/password", {
-        oldPassword: oldPassword,
-        newPassword: password,
+      setIsLoading(true);
+      await axios.put("/auth/password", {
+        oldPassword: oldPwd,
+        newPassword: pwd,
       });
-      toast({
-        title: res.data,
-      });
+
       setPwdDialog(false);
-      setOldPassword("");
-      setPassword("");
-      setConfirmPassword("");
+      setOldPwd("");
+      setPwd("");
+      setConfirmPwd("");
     } catch (error) {
       console.log(error);
     } finally {
@@ -58,7 +55,7 @@ const PasswordDialog = ({ setPwdDialog }) => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[400px]">
+    <DialogContent className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
       <DialogHeader>
         <DialogTitle>Change Password</DialogTitle>
         <DialogDescription>
@@ -68,63 +65,33 @@ const PasswordDialog = ({ setPwdDialog }) => {
       <form id="changePasswordForm" onSubmit={handleSubmit}>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="oldPassword" className="text-right">
-              Old Password
-            </Label>
-            <Input
-              id="oldPassword"
-              type="password"
-              required
+            <PwdInput
+              id="oldPwd"
+              name="Old Password"
+              pwd={oldPwd}
+              setPwd={setOldPwd}
+              dialog={1}
               placeholder="Google Password"
-              minLength={4}
-              autoComplete="off"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="newPassword" className="text-right">
-              New Password
-            </Label>
-            <Input
-              id="newPassword"
-              type="password"
-              required
-              placeholder="Insta Password"
-              autoComplete="off"
-              minLength={4}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={
-                match === 1
-                  ? "border-green-500 col-span-3"
-                  : match === 2
-                  ? "border-red-500 col-span-3"
-                  : "col-span-3"
-              }
+            <PwdInput
+              id="newPwd"
+              name="New Password"
+              pwd={pwd}
+              setPwd={setPwd}
+              dialog={1}
+              match={match}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="confirmNewPassword" className="text-right">
-              Confirm New Password
-            </Label>
-            <Input
-              id="confirmNewPassword"
-              type="password"
-              required
-              placeholder="Insta Password"
-              minLength={4}
-              autoComplete="off"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className={
-                match === 1
-                  ? "border-green-500 col-span-3"
-                  : match === 2
-                  ? "border-red-500 col-span-3"
-                  : "col-span-3"
-              }
+            <PwdInput
+              id="confirmNewPwd"
+              name="Confirm New Password"
+              pwd={confirmPwd}
+              setPwd={setConfirmPwd}
+              dialog={1}
+              match={match}
             />
           </div>
         </div>

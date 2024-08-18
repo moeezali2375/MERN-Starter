@@ -1,14 +1,12 @@
 import useAxios from "@/hooks/useAxios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import useUser from "@/context/User/UserHook";
 
 const ChangeEmailVerification = () => {
   const [isLoading, setIsLoading] = useState(0);
   const axios = useAxios();
-  const { toast } = useToast();
   const { token } = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useUser();
@@ -18,7 +16,6 @@ const ChangeEmailVerification = () => {
       const verifyChangeEmail = async () => {
         try {
           const res = await axios.get("/auth/email/verify/" + token);
-          toast({ title: res.data.notification });
           setUser({ ...user, email: res.data.newEmail });
           setIsLoading(1);
         } catch (error) {

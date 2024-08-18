@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, CircleUser, Package2 } from "lucide-react";
+import { Menu, CircleUser } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { ModeToggle } from "./mode-toggle";
 import useUser from "@/context/User/UserHook";
@@ -33,15 +33,15 @@ const Header = () => {
           to="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Package2 className="h-6 w-6" />
-          <span className="sr-only">MERN-Starter</span>
+          MERN
+          <span className="sr-only">MERN</span>
         </Link>
-        <Link
-          to=""
+        {/* <Link
+          to="/"
           className="text-foreground transition-colors hover:text-foreground"
         >
-          Settings
-        </Link>
+          MERN
+        </Link> */}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -53,17 +53,17 @@ const Header = () => {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              to="#"
+              to="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Acme Inc</span>
+              MERN
+              <span className="sr-only">MERN</span>
             </Link>
             <Link
               to="#"
               className="text-muted-foreground hover:text-foreground"
             >
-              Dashboard
+              Coming Soon...
             </Link>
           </nav>
         </SheetContent>

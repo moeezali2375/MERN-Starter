@@ -12,46 +12,40 @@ import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import useUser from "@/context/User/UserHook";
 import { Link, useNavigate } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import { LoaderCircle } from "lucide-react";
+import PwdInput from "./PwdInput";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [pwd, setPwd] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { setUser } = useUser();
   const axios = useAxios();
 
   const handleGuest = () => {
     setEmail("moeezali2375@gmail.com");
-    setPassword("1234");
+    setPwd("1234");
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
+    if (!email || !pwd) return;
     try {
-      if (!email || !password) {
-        return;
-      }
+      setIsLoading(true);
       const res = await axios.post("/auth/login", {
         email: email,
-        password: password,
+        password: pwd,
         rememberMe: rememberMe,
       });
-      toast({
-        title: "Login Success.",
-        description: "You are logged in.",
-      });
+
       navigate("/home");
-      setUser(res.data);
+      setUser(res.data.user);
     } catch (error) {
       console.log(error);
     } finally {
@@ -81,18 +75,14 @@ const Login = () => {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <Input
+              <PwdInput
                 id="password"
-                placeholder="Insta Password"
-                type="password"
-                value={password}
-                required
-                minLength={4}
-                onChange={(e) => setPassword(e.target.value)}
+                name="Password"
+                pwd={pwd}
+                setPwd={setPwd}
               />
             </div>
-            
+
             <div className="flex items-center justify-between ">
               <Label htmlFor="rememberme">Remember Me</Label>
               <Switch

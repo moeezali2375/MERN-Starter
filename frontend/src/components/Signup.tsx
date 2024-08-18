@@ -43,11 +43,9 @@ const Signup = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!name || !email || match === 2 || match == 0) return;
     try {
-      if (!name || !email || match === 2 || match == 0) {
-        return;
-      }
+      setIsLoading(true);
       const res = await axios.post("/auth/register", {
         name: name,
         email: email,

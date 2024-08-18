@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,7 +20,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import useUser from "@/context/User/UserHook";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 
 const FormSchema = z.object({
@@ -43,17 +42,22 @@ export function VerificationForm() {
   const axios = useAxios();
   const navigate = useNavigate();
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     if (user.isVerified === true) navigate("/home");
   }, [user, navigate]);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   const handleResend = async () => {
     setIsLoading2(true);
     try {
-      const res = await axios.get("/auth/token/regenerate");
-      toast({
-        title: res.data,
-      });
+      await axios.get("/auth/token/regenerate");
     } catch (error) {
       console.log(error);
     } finally {
@@ -74,10 +78,6 @@ export function VerificationForm() {
         ),
       });
       await axios.get(url);
-      toast({
-        title: "Verification Successfull!",
-        description: "🥳 You can now start using the app.💥",
-      });
       setUser({ ...user, isVerified: true });
     } catch (error) {
       console.log(error);
@@ -98,11 +98,15 @@ export function VerificationForm() {
           render={({ field }) => (
             <FormItem className="w-full max-w-sm">
               <FormLabel className="text-center">
-                <h3 className="text-xl font-semibold ">Verification Code</h3>
+                <h3 className="text-3xl font-semibold">Verification Code</h3>
               </FormLabel>
               <div className="flex justify-center">
                 <FormControl className="text-center">
-                  <InputOTP maxLength={6} {...field}>
+                  <InputOTP
+                    maxLength={6}
+                    ref={inputRef} // Attach the ref here
+                    {...field}
+                  >
                     <InputOTPGroup className="flex justify-center">
                       {[...Array(6)].map((_, index) => (
                         <InputOTPSlot key={index} index={index} />
@@ -118,21 +122,16 @@ export function VerificationForm() {
             </FormItem>
           )}
         />
-
-        <div className="flex space-x-4">
+        <div className="flex flex-row-reverse space-x-4 space-x-reverse">
+          <Button variant="outline" type="submit" disabled={isLoading}>
+            {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
+          </Button>
           <Button
             variant="secondary"
             onClick={handleResend}
-            disabled={isLoading2 ? true : false}
+            disabled={isLoading2}
           >
             {isLoading2 ? <LoaderCircle className="spinner" /> : "Resend"}
-          </Button>
-          <Button
-            variant="outline"
-            type="submit"
-            disabled={isLoading ? true : false}
-          >
-            {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
           </Button>
         </div>
       </form>

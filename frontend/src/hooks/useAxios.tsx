@@ -30,35 +30,38 @@ const useAxios = () => {
 
     const resInterceptor = axiosInstance.interceptors.response.use(
       (response) => {
+        if (response.data.msg) {
+          toast({
+            variant: "default",
+            title: response.data.msg?.title,
+            description: response.data.msg?.desc,
+          });
+        }
         return response;
       },
       (error) => {
-        if (error.response?.status == 403) {
-          toast({
-            variant: "destructive",
-            description:
-              error.response?.data || "An error occurred during login.",
-          });
-          navigate("/verify");
-        } else if (error.response?.status == 401) {
-          toast({
-            variant: "destructive",
-            description:
-              error.response?.data || "An error occurred during login.",
-          });
-          logout();
-          navigate("/");
-        } else if (!error.response) {
+        if (error.response) {
+          const res = error.response;
+          if (res.data.msg) {
+            if (res.status == 403) {
+              //! verify
+              navigate("/verify");
+            } else if (res.status == 401) {
+              //! login
+              logout();
+              navigate("/");
+            }
+            toast({
+              variant: "destructive",
+              description:
+                res.data?.msg?.title || "Oops! Something went wrong. 👉🏽👈🏽",
+            });
+          }
+        } else {
           //! Network Error
           toast({
             variant: "destructive",
-            description: error.message || "An error occurred during login.",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            description:
-              error.response?.data || "An error occurred during login.",
+            description: "Network Error 🛜",
           });
         }
         return Promise.reject(error);

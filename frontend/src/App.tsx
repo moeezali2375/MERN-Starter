@@ -19,7 +19,8 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate("/home");
+    if (user && user.isVerified) navigate("/home");
+    if (user && !user.isVerified) navigate("/verify");
   }, [navigate, user]);
 
   return (
