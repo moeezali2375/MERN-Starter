@@ -1,5 +1,7 @@
 const checkLogin = async (req, res) => {
-  res.send("You are logged in");
+  res
+    .status(200)
+    .send({ msg: { title: "All Okay! 🥳", desc: "You are authorized!" } });
 };
 
 module.exports = {

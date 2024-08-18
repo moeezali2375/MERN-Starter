@@ -2,35 +2,47 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 const protect = async (req, res, next) => {
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      const now = new Date();
-      token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
-      const result = await User.findById(decoded.id);
-      if (!result) {
-        return res.status(401).send("Not Authorized.");
-      } else if (result?.verificationTokenExpires < now) {
-        return res.status(401).send("Not Authorized.");
-      }
-      req.user = {
-        _id: result._id,
-        name: result.name,
-        email: result.email,
-        isVerified: result.isVerified,
-      };
+  try {
+    let token;
 
-      next();
-    } catch (error) {
-      console.log(error);
-      return res.status(401).send("Not Authorized.");
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
     }
+
+    if (!token) {
+      throw new Error();
+    }
+
+    const now = new Date();
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      throw new Error();
+    }
+
+    if (user.verificationTokenExpires < now) {
+      throw new Error();
+    }
+
+    req.user = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isVerified: user.isVerified,
+    };
+
+    next();
+  } catch (error) {
+    res.status(401).send({
+      msg: {
+        title: "Authentication Failed! 🧑🏻‍💻", 
+      },
+    });
   }
-  if (!token) return res.status(401).send("Not Authorized.");
 };
 
 module.exports = protect;
