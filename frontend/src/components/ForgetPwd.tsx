@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
 import useAxios from "@/hooks/useAxios";
 
 const ForgetPwd = () => {
@@ -20,18 +19,12 @@ const ForgetPwd = () => {
   const [isLoading, setisLoading] = useState(false);
   const navigate = useNavigate();
   const axios = useAxios();
-  const { toast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setisLoading(true);
     try {
-      const res = await axios.put("/auth/password/forget", { email: email });
-      toast({
-        title: res.data,
-        description: "Please check you inbox 📥",
-        variant: "default",
-      });
+      await axios.put("/auth/password/forget", { email: email });
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -41,8 +34,8 @@ const ForgetPwd = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
-      <Card className="w-[400px]">
+    <div className="flex items-center justify-center min-h-screen">
+      <Card className="w-[400px] mr-2 ml-2">
         <CardHeader>
           <CardTitle>Forget Password 🤦‍♂️</CardTitle>
           <CardDescription>
@@ -50,7 +43,7 @@ const ForgetPwd = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
@@ -74,7 +67,6 @@ const ForgetPwd = () => {
             variant="default"
             type="submit"
             disabled={isLoading ? true : false}
-            onClick={handleSubmit}
           >
             {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
           </Button>
