@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+
 import useUser from "@/context/User/UserHook";
 import { useNavigate } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
@@ -16,49 +16,45 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { LoaderCircle } from "lucide-react";
+import PwdInput from "@/components/PwdInput";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
   const [match, setMatch] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { setUser } = useUser();
   const axios = useAxios();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (password && confirmPassword) {
-        setMatch(password === confirmPassword ? 1 : 2);
+      if (pwd && confirmPwd) {
+        setMatch(pwd === confirmPwd && pwd.length >= 4 ? 1 : 2);
       } else {
         setMatch(0);
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [password, confirmPassword]);
+  }, [pwd, confirmPwd]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      if (!name || !email || match === 2) {
+      if (!name || !email || match === 2 || match == 0) {
         return;
       }
       const res = await axios.post("/auth/register", {
         name: name,
         email: email,
-        password: password,
-      });
-      toast({
-        title: "Signup Success.",
-        description: "Please verify your account to continue.",
+        password: pwd,
       });
       navigate("/home");
-      setUser(res.data);
+      setUser(res.data.user);
     } catch (error) {
       console.log(error);
     } finally {
@@ -100,47 +96,29 @@ const Signup = () => {
                 id="email"
                 type="email"
                 placeholder="moeezali2375@gmail.com"
+                autoCorrect="off"
+                spellCheck="false"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="Password">Password</Label>
-              <Input
-                type="password"
-                id="Password"
-                placeholder="Insta Password"
-                required
-                autoComplete="off"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={
-                  match === 1
-                    ? "border-green-500"
-                    : match === 2
-                    ? "border-red-500"
-                    : ""
-                }
+              <PwdInput
+                id="pwd"
+                name="Password"
+                pwd={pwd}
+                setPwd={setPwd}
+                match={match}
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                type="password"
-                id="confirmPassword"
-                placeholder="Google Password"
-                required
-                autoComplete="off"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={
-                  match === 1
-                    ? "border-green-500"
-                    : match === 2
-                    ? "border-red-500"
-                    : ""
-                }
+              <PwdInput
+                id="confirmPwd"
+                name="Confirm Password"
+                pwd={confirmPwd}
+                setPwd={setConfirmPwd}
+                match={match}
               />
             </div>
           </CardContent>
