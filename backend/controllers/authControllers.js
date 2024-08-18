@@ -178,7 +178,7 @@ const changePassword = async (req, res) => {
           },
         });
       } else {
-        throw new Error("Passwords don't match. 😱");
+        throw new Error("Old password doesn't match. 😱");
       }
     } else {
       throw new Error("User doesn't exist. 🤯");
@@ -253,7 +253,7 @@ const verifyChangeEmail = async (req, res) => {
         await sendEmailNotification(user.email, message.subject, message.body);
 
         res.status(200).send({
-          msg: { title: "Your email is Changed! 🥂" },
+          msg: { title: "Your email is changed! 🥂" },
           newEmail: user.email,
         });
       } else {
@@ -303,6 +303,8 @@ const verifyForgetPasswordRequest = async (req, res) => {
       isTrue.forgetPasswordExpires = undefined;
       isTrue.forgetPasswordToken = undefined;
       await isTrue.save();
+      const message = changePasswordNotification(isTrue);
+      await sendEmailNotification(isTrue.email, message.subject, message.body);
       res.status(200).send({
         msg: {
           title: "Password recovered! 😎",
