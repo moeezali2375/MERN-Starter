@@ -12,7 +12,7 @@ const crossOrigin = (app) => {
     //! Production environment
     app.use(
       cors({
-        origin:  process.env.PROD_URL,
+        origin: process.env.PROD_URL,
       })
     );
   }
