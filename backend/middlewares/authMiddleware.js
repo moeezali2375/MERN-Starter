@@ -17,7 +17,7 @@ const protect = async (req, res, next) => {
     }
 
     const now = new Date();
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    const decoded = jwt.verify(token, process.env.TOKEN);
     const user = await User.findById(decoded.id);
 
     if (!user) {

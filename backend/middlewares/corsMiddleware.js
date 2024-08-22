@@ -5,14 +5,14 @@ const crossOrigin = (app) => {
     //! Development environment
     app.use(
       cors({
-        origin: process.env.DEV_URL,
+        origin: process.env.CLIENT_DEV_URL,
       })
     );
   } else {
     //! Production environment
     app.use(
       cors({
-        origin: process.env.PROD_URL,
+        origin: process.env.CLIENT_PROD_URL,
       })
     );
   }
