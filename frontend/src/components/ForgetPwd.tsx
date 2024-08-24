@@ -36,14 +36,14 @@ const ForgetPwd = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card className="w-[400px] mr-2 ml-2">
-        <CardHeader>
-          <CardTitle>Forget Password 🤦‍♂️</CardTitle>
-          <CardDescription>
-            Enter your email to initiate the request.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form id="forgetpwd" onSubmit={handleSubmit}>
+        <form id="forgetpwd" onSubmit={handleSubmit}>
+          <CardHeader>
+            <CardTitle>Forget Password 🤦‍♂️</CardTitle>
+            <CardDescription>
+              Enter your email to initiate the request.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
@@ -57,20 +57,16 @@ const ForgetPwd = () => {
                 />
               </div>
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="secondary" onClick={() => navigate("/")}>
-            Cancel
-          </Button>
-          <Button
-            variant="default"
-            type="submit"
-            disabled={isLoading ? true : false}
-          >
-            {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
-          </Button>
-        </CardFooter>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="secondary" onClick={() => navigate("/")}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isLoading ? true : false}>
+              {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
+            </Button>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   );
