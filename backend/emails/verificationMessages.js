@@ -10,7 +10,8 @@ const emailVerificationMessage = (user) => {
 };
 
 const changeEmailVerficationMessage = (user) => {
-  const verificationUrl = `${process.env.CLIENT}/email/verify/${user.newEmailToken}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  const verificationUrl = `${baseUrl}/email/verify/${user.newEmailToken}`;
   const body = `<p>Dear ${user.name},</p>
     <p>Please verify your email by clicking the link below:</p><a href="${verificationUrl}">${verificationUrl}</a>
     <p>This email change request will expire after 5 minutes.</p>
@@ -24,7 +25,8 @@ const changeEmailVerficationMessage = (user) => {
 };
 
 const forgetPwdVerificationMessage = (user) => {
-  const verificationUrl = `${process.env.CLIENT}/password/verify/${user.email}/${user.forgetPasswordToken}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  const verificationUrl = `${baseUrl}/password/verify/${user.email}/${user.forgetPasswordToken}`;
   const body = `<p>Dear ${user.name},</p>
     <p>Please verify your request by clicking the link below:</p><a href="${verificationUrl}">Click Me.</a>
     <p>This request will expire after 5 minutes.</p>
