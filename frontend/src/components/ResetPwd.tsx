@@ -52,15 +52,15 @@ const ResetPwd = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
-      <Card className="w-[400px] mr-2 ml-2">
-        <CardHeader>
-          <CardTitle>New Password 🤨</CardTitle>
-          <CardDescription>
-            Enter your new password and please don't forget it this time.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form id="reset" onSubmit={handleSubmit}>
+      <form id="reset" onSubmit={handleSubmit}>
+        <Card className="w-[400px] mr-2 ml-2">
+          <CardHeader>
+            <CardTitle>New Password 🤨</CardTitle>
+            <CardDescription>
+              Enter your new password and please don't forget it this time.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <PwdInput
@@ -81,21 +81,21 @@ const ResetPwd = () => {
                 />
               </div>
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="secondary" onClick={() => navigate("/")}>
-            Cancel
-          </Button>
-          <Button
-            variant="default"
-            type="submit"
-            disabled={isLoading ? true : false}
-          >
-            {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
-          </Button>
-        </CardFooter>
-      </Card>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="secondary" onClick={() => navigate("/")}>
+              Cancel
+            </Button>
+            <Button
+              variant="default"
+              type="submit"
+              disabled={isLoading ? true : false}
+            >
+              {isLoading ? <LoaderCircle className="spinner" /> : "Submit!"}
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
     </div>
   );
 };
