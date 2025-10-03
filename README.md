@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository provides a starter template for building MERN stack applications using Vite, React 18+shadcn, and ExpressJS. It includes a complete authentication system to help you kickstart your project with a robust structure.
+This repository (is spining my head) provides a starter template for building MERN stack applications using Vite, React 18+shadcn, and ExpressJS. It includes a complete authentication system to help you kickstart your project with a robust structure.
 
 ## Features
 
