@@ -1,44 +1,25 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
-import "./jobs/cleanup.js";
-import connectDB from "./config/db.js";
-import homeRoutes from "./routes/routes.js";
-import authRoutes from "./routes/authRoutes.js";
-import protectRoutes from "./routes/protectRoutes.js";
-import { crossOrigin } from "./middlewares/corsMiddleware.js";
-import path from "path";
+import mongoose from "mongoose";
+import cors from "cors";       // 👈 import cors
+import todoRoutes from "./routes/todoRoutes.js";
 
+dotenv.config();
 const app = express();
 
-//!Middlewares
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-crossOrigin(app);
-app.use("/api", homeRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/protect", protectRoutes);
+app.use(cors());               // 👈 allow frontend (port 3000) to access backend (port 5000)
 
-const __dirname1 = path.resolve();
+// Routes
+app.use("/api/todos", todoRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(
-    express.static(path.join(path.dirname(__dirname1), "frontend", "dist")),
-  );
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.resolve(path.dirname(__dirname1), "frontend", "dist", "index.html"),
+// Connect DB & Start server
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(process.env.PORT, () =>
+      console.log(`Server running on port ${process.env.PORT}`)
     );
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.send("API is up and running!");
-  });
-}
-
-const PORT = process.env.PORT;
-
-app.listen(PORT, () => {
-  console.log("Server Started on Port: " + PORT);
-  connectDB();
-});
+  })
+  .catch((err) => console.error(err));

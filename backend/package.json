@@ -1,31 +1,21 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "This is an example project of backend in expressJS having all the authentication functionality including email verification, access and refresh tokens.",
-  "main": "server.js",
+  "description": "",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "deploy": "cd ../frontend && npm run build && cd ../backend && npm start",
-    "dev": "nodemon server.js",
-    "build": "npm install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
-  "author": "Moeez Ali",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.0",
-    "node-cron": "^3.0.3",
-    "nodemailer": "^6.9.14"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.22.0",
-    "eslint": "^9.22.0",
-    "globals": "^16.0.0"
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0",
+    "nodemon": "^3.1.10"
   }
 }
