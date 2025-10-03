@@ -1,3 +1,6 @@
+## Quick Start Guide
+   Simply run `npm install && npm start` in both backend and frontend folders.
+
 # MERN-Starter
 
 ## Description
@@ -70,3 +73,33 @@ This repository provides a starter template for building MERN stack applications
      npm run build
      ```
    - This will create optimized static files in the `dist` directory of the `frontend` folder. You can then serve these files using any static file server or integrate them with your backend.
+
+
+<<<<<<< HEAD
+## Quick Start
+Run `npm install` and `npm start` in both directories.
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB installed and running
+- npm or yarn
+
+### Environment Variables
+Create a `.env` file in the backend directory:
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/mern-starter
+JWT_SECRET=your_secret_key_here
+
+### Installation Steps
+1. Clone the repository
+2. Install backend dependencies: `cd backend && npm install`
+3. Install frontend dependencies: `cd frontend && npm install`
+4. Start MongoDB service
+5. Run backend: `cd backend && npm start`
+6. Run frontend: `cd frontend && npm start`
+=======
+## Quick Start
+   Run `npm install` and `npm start` in both directories.
+>>>>>>> main
